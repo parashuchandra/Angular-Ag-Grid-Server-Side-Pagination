@@ -9,7 +9,8 @@ import {
   IDatasource,
   IGetRowsParams,
   GridApi,
-  ColDef
+  ColDef,
+  CellClickedEvent,
 } from "ag-grid-community";
 import { Subscription } from "rxjs";
 
@@ -42,6 +43,9 @@ export class AppComponent implements OnInit {
         width: 50,
         cellRenderer: function() {
           return '<img src="assets/icons/edit.svg">';
+        },
+        onCellClicked: function (params: CellClickedEvent) {
+          console.log(params.data.id);
         }
       },
       {
@@ -94,7 +98,7 @@ export class AppComponent implements OnInit {
       rowModelType: "infinite",
       getRowStyle: params => {
         if (params.node.rowIndex % 2 === 0) {
-          return { background: "#BDBDBD" };
+          return { background: "#e0e0e0" };
         }
       }
     };
