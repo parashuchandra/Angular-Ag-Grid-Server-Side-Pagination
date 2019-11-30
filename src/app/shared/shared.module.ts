@@ -9,10 +9,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
   ],
   imports: [
     CommonModule,
-    NgbModule.forRoot()
+    NgbModule
   ],
   exports: [
-    NgbModule.forRoot().ngModule,
+    NgbModule,
     AlertPopupComponent,
   ]
 })

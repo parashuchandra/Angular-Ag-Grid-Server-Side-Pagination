@@ -5,3 +5,8 @@
 body {
     padding-top: 80px;
 }
+
+.ag-row-hover {
+    /* putting in !important so it overrides the theme's styling as it hovers the row also */
+    background-color: #455A64 !important;
+}
