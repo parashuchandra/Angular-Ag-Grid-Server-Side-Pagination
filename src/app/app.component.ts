@@ -14,7 +14,7 @@ import { Subscription } from 'rxjs';
 })
 export class AppComponent implements OnInit {
 
-  @ViewChild('myGrid') myGrid: AgGridAngular;
+  @ViewChild('myGrid', { static: true }) myGrid: AgGridAngular;
 
   private gridOptions: Partial<GridOptions>;
   private gridApi;
@@ -32,12 +32,12 @@ export class AppComponent implements OnInit {
     private test: TestService) {
 
     this.columnDefs = [
-      { headerName: 'User Id', field: 'id', sortable: true },
+      { headerName: 'User Id', field: 'id', sortable: true,filter: 'agNumberColumnFilter' },
       { headerName: 'First Name', field: 'first_name', sortable: true, filter: 'agTextColumnFilter' },
       { headerName: 'Last Name', field: 'last_name', sortable: true, filter: 'agTextColumnFilter' },
-      { headerName: 'Email', field: 'email', sortable: true },
-      { headerName: 'Gender', field: 'gender', sortable: true },
-      { headerName: 'Company', field: 'company', sortable: true }
+      { headerName: 'Email', field: 'email', sortable: true,filter: 'agTextColumnFilter' },
+      { headerName: 'Gender', field: 'gender', sortable: true,filter: 'agTextColumnFilter' },
+      { headerName: 'Company', field: 'company', sortable: true,filter: 'agTextColumnFilter' }
     ];
 
     this.cacheOverflowSize = 2;
@@ -49,7 +49,7 @@ export class AppComponent implements OnInit {
       rowHeight: 30,
       cacheBlockSize: 90,
       paginationPageSize: 90,
-      rowModelType: 'infinite',
+      rowModelType: 'infinite'
     }
   }
 
