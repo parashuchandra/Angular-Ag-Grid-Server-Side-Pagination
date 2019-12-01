@@ -100,12 +100,14 @@ export class AppComponent implements OnInit {
     this.cacheOverflowSize = 2;
     this.maxConcurrentDatasourceRequests = 2;
     this.infiniteInitialRowCount = 1;
-    this.paginationPageSize = 100;
+    this.paginationPageSize = 20;
+  }
+
+  onPageSizeChanged(newPageSize: Number) {
+    this.gridApi.paginationSetPageSize(Number(newPageSize));
   }
 
   onGridReady(params) {
-    console.log("On Grid Ready");
-
     this.gridApi = params.api;
 
     const datasource: IDatasource = {

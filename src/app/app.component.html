@@ -1,20 +1,31 @@
-<ag-grid-angular
-  #agGrid
-  style="height: 500px;"
-  id="myGrid"
-  class="ag-theme-balham"
-  [modules]="modules"
-  [columnDefs]="columnDefs"
-  [floatingFilter]="true"
-  [rowModelType]="rowModelType"
-  [paginationPageSize]="paginationPageSize"
-  [cacheOverflowSize]="cacheOverflowSize"
-  [maxConcurrentDatasourceRequests]="maxConcurrentDatasourceRequests"
-  [infiniteInitialRowCount]="infiniteInitialRowCount"
-  [maxBlocksInCache]="maxBlocksInCache"
-  [components]="components"
-  [rowData]="rowData"
-  [pagination]="true"
-  (gridReady)="onGridReady($event)"
->
-</ag-grid-angular>
+<div class="test-container">
+  <div class="test-header">
+    Page Size:
+    <select (change)="onPageSizeChanged($event.target.value)" id="page-size">
+      <option value="20" selected="">20</option>
+      <option value="50">50</option>
+      <option value="75">75</option>
+      <option value="100">100</option>
+    </select>
+  </div>
+  <ag-grid-angular
+    #agGrid
+    style="height: 500px;"
+    id="myGrid"
+    class="ag-theme-balham"
+    [modules]="modules"
+    [columnDefs]="columnDefs"
+    [floatingFilter]="true"
+    [rowModelType]="rowModelType"
+    [paginationPageSize]="paginationPageSize"
+    [cacheOverflowSize]="cacheOverflowSize"
+    [maxConcurrentDatasourceRequests]="maxConcurrentDatasourceRequests"
+    [infiniteInitialRowCount]="infiniteInitialRowCount"
+    [maxBlocksInCache]="maxBlocksInCache"
+    [components]="components"
+    [rowData]="rowData"
+    [pagination]="true"
+    (gridReady)="onGridReady($event)"
+  >
+  </ag-grid-angular>
+</div>
