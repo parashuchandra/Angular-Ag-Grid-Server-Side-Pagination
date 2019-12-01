@@ -1,8 +1,5 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { TestService } from "./core/services/test.service";
-import { AgGridAngular } from "@ag-grid-community/angular";
-import "@ag-grid-community/all-modules/dist/styles/ag-grid.css";
-import "@ag-grid-community/all-modules/dist/styles/ag-theme-balham.css";
 import {
   GridOptions,
   IDatasource,
@@ -60,37 +57,43 @@ export class AppComponent implements OnInit {
         headerName: "User Id",
         field: "id",
         sortable: true,
-        filter: "agNumberColumnFilter"
+        filter: "agNumberColumnFilter",
+        unSortIcon: true
       },
       {
         headerName: "First Name",
         field: "first_name",
         sortable: true,
-        filter: "agTextColumnFilter"
+        filter: "agTextColumnFilter",
+        unSortIcon: true
       },
       {
         headerName: "Last Name",
         field: "last_name",
         sortable: true,
-        filter: "agTextColumnFilter"
+        filter: "agTextColumnFilter",
+        unSortIcon: true
       },
       {
         headerName: "Email",
         field: "email",
         sortable: true,
-        filter: "agTextColumnFilter"
+        filter: "agTextColumnFilter",
+        unSortIcon: true
       },
       {
         headerName: "Gender",
         field: "gender",
         sortable: true,
-        filter: "agTextColumnFilter"
+        filter: "agTextColumnFilter",
+        unSortIcon: true
       },
       {
         headerName: "Company",
         field: "company",
         sortable: true,
-        filter: "agTextColumnFilter"
+        filter: "agTextColumnFilter",
+        unSortIcon: true
       }
     ];
 
@@ -118,7 +121,6 @@ export class AppComponent implements OnInit {
         });
       }
     };
-
     this.gridApi.setDatasource(datasource);
   }
 
