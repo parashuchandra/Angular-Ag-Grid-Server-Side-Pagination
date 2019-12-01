@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { TestService } from "./core/services/test.service";
-import { AgGridAngular } from "ag-grid-angular";
+import { AgGridAngular } from "@ag-grid-community/angular";
+import "@ag-grid-community/all-modules/dist/styles/ag-grid.css";
+import "@ag-grid-community/all-modules/dist/styles/ag-theme-balham.css";
 import {
   GridOptions,
   IDatasource,
@@ -8,7 +10,9 @@ import {
   GridApi,
   ColDef,
   CellClickedEvent,
-} from "ag-grid-community";
+  AllCommunityModules,
+  Module
+} from "@ag-grid-community/all-modules";
 import { Subscription } from "rxjs";
 
 @Component({
@@ -17,18 +21,31 @@ import { Subscription } from "rxjs";
   styleUrls: ["./app.component.scss"]
 })
 export class AppComponent implements OnInit {
-  @ViewChild("myGrid", { static: true }) myGrid: AgGridAngular;
-
-  gridOptions: Partial<GridOptions>;
+  public modules: Module[] = AllCommunityModules;
+  gridOptions: GridOptions;
   private gridApi: GridApi;
   columnDefs: ColDef[];
-  cacheOverflowSize: number;
-  maxConcurrentDatasourceRequests: number;
-  infiniteInitialRowCount: number;
   userSubscriber: Subscription;
   rowData: any;
-
+  private rowModelType;
+  private paginationPageSize;
+  private cacheOverflowSize;
+  private maxConcurrentDatasourceRequests;
+  private infiniteInitialRowCount;
+  private maxBlocksInCache;
+  private components;
   constructor(private test: TestService) {
+    this.maxBlocksInCache = 2;
+    this.rowModelType = "infinite";
+    this.components = {
+      loadingCellRenderer: function(params) {
+        if (params.value !== undefined) {
+          return params.value;
+        } else {
+          return '<img src="https://raw.githubusercontent.com/ag-grid/ag-grid/master/packages/ag-grid-docs/src/images/loading.gif">';
+        }
+      }
+    };
     this.columnDefs = [
       {
         headerName: "",
@@ -79,21 +96,8 @@ export class AppComponent implements OnInit {
 
     this.cacheOverflowSize = 2;
     this.maxConcurrentDatasourceRequests = 2;
-    this.infiniteInitialRowCount = 2;
-
-    this.gridOptions = {
-      headerHeight: 45,
-      rowHeight: 30,
-      cacheBlockSize: 90,
-      paginationPageSize: 90,
-      rowModelType: "infinite",
-      floatingFilter: true,
-      getRowStyle: params => {
-        if (params.node.rowIndex % 2 === 0) {
-          return { background: "#e0e0e0" };
-        }
-      }
-    };
+    this.infiniteInitialRowCount = 1;
+    this.paginationPageSize = 100;
   }
 
   onGridReady(params) {

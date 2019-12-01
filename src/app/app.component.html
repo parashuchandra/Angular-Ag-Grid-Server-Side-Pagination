@@ -1,17 +1,22 @@
 <div [ngStyle]="style">
   <ag-grid-angular
-    #myGrid
+    #agGrid
     style="height: 500px;"
+    id="myGrid"
     class="ag-theme-balham"
-    [rowData]="rowData"
+    [modules]="modules"
     [columnDefs]="columnDefs"
-    [gridOptions]="gridOptions"
+    [floatingFilter]="true"
+    [rowModelType]="rowModelType"
+    [paginationPageSize]="paginationPageSize"
     [cacheOverflowSize]="cacheOverflowSize"
     [maxConcurrentDatasourceRequests]="maxConcurrentDatasourceRequests"
     [infiniteInitialRowCount]="infiniteInitialRowCount"
+    [maxBlocksInCache]="maxBlocksInCache"
+    [components]="components"
+    [rowData]="rowData"
     [pagination]="true"
     (gridReady)="onGridReady($event)"
-    (paginationChanged)="onPaginationChanged($event)"
   >
   </ag-grid-angular>
 </div>

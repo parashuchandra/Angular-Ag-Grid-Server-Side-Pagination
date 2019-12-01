@@ -11,7 +11,7 @@ import { HttpErrorService } from './core/services/http-error.service';
 import { AlertPopupComponent } from './shared/popups/alert-popup/alert-popup.component';
 import { MasterHeaderComponent } from './core/components/master-header/master-header.component';
 import { MasterFooterComponent } from './core/components/master-footer/master-footer.component';
-import { AgGridModule } from 'ag-grid-angular';
+import { AgGridModule } from '@ag-grid-community/angular';
 
 @NgModule({
   declarations: [
