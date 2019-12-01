@@ -1,8 +1,5 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { TestService } from "./core/services/test.service";
-import { HttpErrorService } from "./core/services/http-error.service";
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { AuthService } from "./core/services/auth.service";
 import { AgGridAngular } from "ag-grid-angular";
 import {
   GridOptions,
@@ -22,18 +19,16 @@ import { Subscription } from "rxjs";
 export class AppComponent implements OnInit {
   @ViewChild("myGrid", { static: true }) myGrid: AgGridAngular;
 
-  private gridOptions: Partial<GridOptions>;
+  gridOptions: Partial<GridOptions>;
   private gridApi: GridApi;
-  private gridColumnApi;
-  private columnDefs: ColDef[];
-  private cacheOverflowSize;
-  private maxConcurrentDatasourceRequests;
-  private infiniteInitialRowCount;
+  columnDefs: ColDef[];
+  cacheOverflowSize: number;
+  maxConcurrentDatasourceRequests: number;
+  infiniteInitialRowCount: number;
   userSubscriber: Subscription;
-
   rowData: any;
 
-  constructor(private authService: AuthService, private test: TestService) {
+  constructor(private test: TestService) {
     this.columnDefs = [
       {
         headerName: "",
@@ -44,9 +39,7 @@ export class AppComponent implements OnInit {
         cellRenderer: function() {
           return '<img src="assets/icons/edit.svg">';
         },
-        onCellClicked: function (params: CellClickedEvent) {
-          console.log(params.data.id);
-        }
+        onCellClicked: (params: CellClickedEvent) => console.log(params.data.id)
       },
       {
         headerName: "User Id",
@@ -108,7 +101,6 @@ export class AppComponent implements OnInit {
     console.log("On Grid Ready");
 
     this.gridApi = params.api;
-    this.gridColumnApi = params.columnApi;
 
     const datasource: IDatasource = {
       getRows: (params: IGetRowsParams) => {
