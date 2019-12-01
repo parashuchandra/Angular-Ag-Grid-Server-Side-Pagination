@@ -61,6 +61,19 @@ export class AppComponent implements OnInit {
         unSortIcon: true
       },
       {
+        headerName: "Date",
+        field: "date",
+        sortable: true,
+        filter: "agDateColumnFilter",
+        unSortIcon: true,
+        filterParams: {
+          browserDatePicker: true
+        },
+        valueFormatter: params => {
+          return new Date(params.value).toUTCString();
+        }
+      },
+      {
         headerName: "First Name",
         field: "first_name",
         sortable: true,
