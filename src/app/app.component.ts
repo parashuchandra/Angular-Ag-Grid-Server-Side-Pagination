@@ -33,8 +33,6 @@ export class AppComponent implements OnInit {
       {
         headerName: "",
         field: "id",
-        sortable: true,
-        filter: "agNumberColumnFilter",
         width: 50,
         cellRenderer: function() {
           return '<img src="assets/icons/edit.svg">';
@@ -89,6 +87,7 @@ export class AppComponent implements OnInit {
       cacheBlockSize: 90,
       paginationPageSize: 90,
       rowModelType: "infinite",
+      floatingFilter: true,
       getRowStyle: params => {
         if (params.node.rowIndex % 2 === 0) {
           return { background: "#e0e0e0" };
