@@ -10,7 +10,8 @@
   </div>
   <ag-grid-angular
     #agGrid
-    style="height: 500px;"
+    style="height:500px;"
+    [animateRows]="true"
     id="myGrid"
     class="ag-theme-balham"
     [modules]="modules"
@@ -22,9 +23,10 @@
     [maxConcurrentDatasourceRequests]="maxConcurrentDatasourceRequests"
     [infiniteInitialRowCount]="infiniteInitialRowCount"
     [maxBlocksInCache]="maxBlocksInCache"
-    [components]="components"
-    [rowData]="rowData"
     [pagination]="true"
+    [rowData]="rowData"
+    [overlayLoadingTemplate]="overlayLoadingTemplate"
+    [overlayNoRowsTemplate]="overlayNoRowsTemplate"
     (gridReady)="onGridReady($event)"
   >
   </ag-grid-angular>

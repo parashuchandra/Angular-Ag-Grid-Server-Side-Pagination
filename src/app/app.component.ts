@@ -30,19 +30,15 @@ export class AppComponent implements OnInit {
   private maxConcurrentDatasourceRequests;
   private infiniteInitialRowCount;
   private maxBlocksInCache;
-  private components;
+  private overlayLoadingTemplate;
+  private overlayNoRowsTemplate;
   constructor(private test: TestService) {
+    this.overlayLoadingTemplate =
+      '<span class="ag-overlay-loading-center">Please wait while your rows are loading</span>';
+    this.overlayNoRowsTemplate =
+      "<span style=\"padding: 10px; border: 2px solid #444; background: lightgoldenrodyellow;\">This is a custom 'no rows' overlay</span>";
     this.maxBlocksInCache = 2;
     this.rowModelType = "infinite";
-    this.components = {
-      loadingCellRenderer: function(params) {
-        if (params.value !== undefined) {
-          return params.value;
-        } else {
-          return '<img src="https://raw.githubusercontent.com/ag-grid/ag-grid/master/packages/ag-grid-docs/src/images/loading.gif">';
-        }
-      }
-    };
     this.columnDefs = [
       {
         headerName: "",
@@ -112,7 +108,6 @@ export class AppComponent implements OnInit {
 
     this.cacheOverflowSize = 2;
     this.maxConcurrentDatasourceRequests = 2;
-    this.infiniteInitialRowCount = 1;
     this.paginationPageSize = 20;
   }
 
@@ -130,9 +125,18 @@ export class AppComponent implements OnInit {
           "Fetching startRow " + params.startRow + " of " + params.endRow
         );
         console.log(params);
+        this.gridApi.showLoadingOverlay();
         this.test.getUsers(params).subscribe(data => {
-          console.log(data);
-          params.successCallback(data["users"], data["totalRecords"]);
+          setTimeout(() => {
+            if (data && data["totalRecords"] > 0) {
+              params.successCallback(data["users"], data["totalRecords"]);
+              this.gridApi.hideOverlay();
+            } else {
+              // inform the grid the request failed
+              this.gridApi.showNoRowsOverlay();
+              params.failCallback();
+            }
+          }, 5000);
         });
       }
     };
