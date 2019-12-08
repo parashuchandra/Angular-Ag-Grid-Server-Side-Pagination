@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
-import { TestService } from "./core/services/test.service";
+import { Component, OnInit, ViewChild, OnDestroy } from "@angular/core";
+import { TableService } from "./core/services/table.service";
 import {
   GridOptions,
   IDatasource,
@@ -17,22 +17,26 @@ import { Subscription } from "rxjs";
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.scss"]
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
+  private pageSizes = [10, 20, 50, 100];
+  private isSyncAnimated: boolean = true;
   public modules: Module[] = AllCommunityModules;
   gridOptions: GridOptions;
   private gridApi: GridApi;
   columnDefs: ColDef[];
   userSubscriber: Subscription;
   rowData: any;
+  private tableSub: Subscription;
   private rowModelType;
   private paginationPageSize;
+  private defaultColDef;
   private cacheOverflowSize;
   private maxConcurrentDatasourceRequests;
   private infiniteInitialRowCount;
   private maxBlocksInCache;
   private overlayLoadingTemplate;
   private overlayNoRowsTemplate;
-  constructor(private test: TestService) {
+  constructor(private test: TableService) {
     this.overlayLoadingTemplate =
       '<span class="ag-overlay-loading-center">Please wait while your rows are loading</span>';
     this.overlayNoRowsTemplate =
@@ -42,18 +46,27 @@ export class AppComponent implements OnInit {
     this.columnDefs = [
       {
         headerName: "",
-        field: "id",
-        width: 50,
-        cellRenderer: function() {
-          return '<img src="assets/icons/edit.svg">';
-        },
+        field: "_id",
+        width: 45,
+        suppressAutoSize: true,
+
+        cellRenderer: () => '<i class="material-icons">edit</i>',
         onCellClicked: (params: CellClickedEvent) => console.log(params.data.id)
       },
       {
-        headerName: "User Id",
-        field: "id",
+        headerName: "First Name",
+        field: "first_name",
         sortable: true,
-        filter: "agNumberColumnFilter",
+        filter: "agTextColumnFilter",
+
+        unSortIcon: true
+      },
+      {
+        headerName: "Last Name",
+        field: "last_name",
+        sortable: true,
+        filter: "agTextColumnFilter",
+
         unSortIcon: true
       },
       {
@@ -62,6 +75,7 @@ export class AppComponent implements OnInit {
         sortable: true,
         filter: "agDateColumnFilter",
         unSortIcon: true,
+
         filterParams: {
           browserDatePicker: true
         },
@@ -69,25 +83,13 @@ export class AppComponent implements OnInit {
           return new Date(params.value).toUTCString();
         }
       },
-      {
-        headerName: "First Name",
-        field: "first_name",
-        sortable: true,
-        filter: "agTextColumnFilter",
-        unSortIcon: true
-      },
-      {
-        headerName: "Last Name",
-        field: "last_name",
-        sortable: true,
-        filter: "agTextColumnFilter",
-        unSortIcon: true
-      },
+
       {
         headerName: "Email",
         field: "email",
         sortable: true,
         filter: "agTextColumnFilter",
+
         unSortIcon: true
       },
       {
@@ -95,6 +97,7 @@ export class AppComponent implements OnInit {
         field: "gender",
         sortable: true,
         filter: "agTextColumnFilter",
+
         unSortIcon: true
       },
       {
@@ -102,10 +105,16 @@ export class AppComponent implements OnInit {
         field: "company",
         sortable: true,
         filter: "agTextColumnFilter",
+
         unSortIcon: true
       }
     ];
-
+    this.defaultColDef = {
+      suppressMenu: true,
+      resizable: true,
+      autoHeight: true,
+      headerCheckboxSelectionFilteredOnly: true
+    };
     this.cacheOverflowSize = 2;
     this.maxConcurrentDatasourceRequests = 2;
     this.paginationPageSize = 20;
@@ -114,7 +123,9 @@ export class AppComponent implements OnInit {
   onPageSizeChanged(newPageSize: Number) {
     this.gridApi.paginationSetPageSize(Number(newPageSize));
   }
-
+  onFirstDataRendered(params) {
+    params.api.sizeColumnsToFit();
+  }
   onGridReady(params) {
     this.gridApi = params.api;
 
@@ -126,17 +137,16 @@ export class AppComponent implements OnInit {
         );
         console.log(params);
         this.gridApi.showLoadingOverlay();
-        this.test.getUsers(params).subscribe(data => {
-          setTimeout(() => {
-            if (data && data["totalRecords"] > 0) {
-              params.successCallback(data["users"], data["totalRecords"]);
-              this.gridApi.hideOverlay();
-            } else {
-              // inform the grid the request failed
-              this.gridApi.showNoRowsOverlay();
-              params.failCallback();
-            }
-          }, 5000);
+        this.test.getUsers(params);
+        this.tableSub = this.test.getTableUpdateListener().subscribe(data => {
+          if (data && data["totalRecords"] > 0) {
+            params.successCallback(data["items"], data["totalRecords"]);
+            this.gridApi.hideOverlay();
+          } else {
+            // inform the grid the request failed
+            this.gridApi.showNoRowsOverlay();
+            params.failCallback();
+          }
         });
       }
     };
@@ -146,4 +156,8 @@ export class AppComponent implements OnInit {
   onPaginationChanged() {}
 
   ngOnInit() {}
+
+  ngOnDestroy() {
+    this.tableSub.unsubscribe();
+  }
 }

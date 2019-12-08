@@ -1,11 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
+@import "variables.scss";
 @import "~bootstrap/scss/bootstrap.scss";
-@import "~@ag-grid-community/all-modules/dist/styles/ag-grid.scss";
-$odd-row-background-color: #CFD8DC;
+@import "~material-design-icons/iconfont/material-icons.css";
+$odd-row-background-color: #cfd8dc;
 $hover-color: #7c7c7c;
-$header-background-color: rgb(255, 224, 184);
-@import "~@ag-grid-community/all-modules/dist/styles/ag-theme-balham/sass/ag-theme-balham.scss";
-
-body {
-  padding-top: 80px;
-}
+@import "~@ag-grid-community/all-modules/dist/styles/ag-grid.scss";
+@import "@ag-grid-community/all-modules/dist/styles/ag-theme-material/sass/ag-theme-material.scss";

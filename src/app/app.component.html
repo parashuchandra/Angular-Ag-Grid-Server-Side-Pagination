@@ -1,33 +1,54 @@
-<div class="test-container">
-  <div class="test-header">
-    Page Size:
-    <select (change)="onPageSizeChanged($event.target.value)" id="page-size">
-      <option value="20" selected="">20</option>
-      <option value="50">50</option>
-      <option value="75">75</option>
-      <option value="100">100</option>
-    </select>
+<div class="card p-3" style="height: 100%;width:100%;">
+  <!-- <div class="card-header">
+    <h2>
+      <a class="effect-1" href="">Hello</a>
+    </h2>
+  </div> -->
+  <div class="card-body">
+    <ag-grid-angular
+      #agGrid
+      style="height: 100%;width:100%;"
+      [animateRows]="true"
+      id="myGrid"
+      class="ag-theme-material"
+      [modules]="modules"
+      [columnDefs]="columnDefs"
+      [defaultColDef]="defaultColDef"
+      [floatingFilter]="true"
+      [rowModelType]="rowModelType"
+      [paginationPageSize]="paginationPageSize"
+      [cacheOverflowSize]="cacheOverflowSize"
+      [maxConcurrentDatasourceRequests]="maxConcurrentDatasourceRequests"
+      [infiniteInitialRowCount]="infiniteInitialRowCount"
+      [maxBlocksInCache]="maxBlocksInCache"
+      [pagination]="true"
+      [rowData]="rowData"
+      [overlayLoadingTemplate]="overlayLoadingTemplate"
+      [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+      (firstDataRendered)="onFirstDataRendered($event)"
+      (gridReady)="onGridReady($event)"
+    >
+    </ag-grid-angular>
+    <div class="mb-9"></div>
+    <div
+      class="btn-toolbar mb-3"
+      role="toolbar"
+      aria-label="Toolbar with button groups"
+    >
+      <div
+        class="btn-group mr-2 btn-group-sm"
+        role="group"
+        aria-label="First group"
+      >
+        <button
+          type="button"
+          class="btn btn-primary"
+          *ngFor="let item of pageSizes"
+          (click)="onPageSizeChanged(item)"
+        >
+          {{ item }}
+        </button>
+      </div>
+    </div>
   </div>
-  <ag-grid-angular
-    #agGrid
-    style="height:500px;"
-    [animateRows]="true"
-    id="myGrid"
-    class="ag-theme-balham"
-    [modules]="modules"
-    [columnDefs]="columnDefs"
-    [floatingFilter]="true"
-    [rowModelType]="rowModelType"
-    [paginationPageSize]="paginationPageSize"
-    [cacheOverflowSize]="cacheOverflowSize"
-    [maxConcurrentDatasourceRequests]="maxConcurrentDatasourceRequests"
-    [infiniteInitialRowCount]="infiniteInitialRowCount"
-    [maxBlocksInCache]="maxBlocksInCache"
-    [pagination]="true"
-    [rowData]="rowData"
-    [overlayLoadingTemplate]="overlayLoadingTemplate"
-    [overlayNoRowsTemplate]="overlayNoRowsTemplate"
-    (gridReady)="onGridReady($event)"
-  >
-  </ag-grid-angular>
 </div>
